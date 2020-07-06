@@ -76,16 +76,20 @@ def add_item(request):
     if request.method == 'POST':
         form = AddItemForm(request.POST)
         if form.is_valid():
-            Item = form.save(commit = False)
-            Item.item_updated = timezone.now()
-            Item.save()
-            return redirect("main:item_list")
+            # Item.item_name = form.cleaned_data['item_name']
+            # Item.item_no = form.cleaned_data['item_no']
+            # Item.item_quantity = form.cleaned_data['item_quantity']
+            # Item.item_price = form.cleaned_data['item_price']
+            # Item.item_description = form.cleaned_data['item_description']
+            #Item.item_updated = datetime.now()
+            Item = form.save()
+            return redirect("main:items")
 
     else:
         form = AddItemForm()
 
 
-    return render(request, "main/item_list.html", {'form': form})
+    return render(request, "main/add_item.html", {'form': form})
 
 
 
