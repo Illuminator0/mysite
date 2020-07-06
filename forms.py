@@ -62,11 +62,42 @@ class NewUserForm(UserCreationForm):
 #         data = self.cleaned_data.get['item_desc']
 #         return data
 
+
 class AddItemForm(forms.ModelForm):
 
     class Meta:
         model = Item
-        fields = (
-            'item_no', 'item_name', 'item_quantity', 'item_description', 'item_price'
-        )
+        exclude = ['item_updated']
+
+    def clean_item_no(self):
+        data = self.cleaned_data.get('item_no')
+        try:
+            match = Item.objects.get(item_no = data)
+        except Item.DoesNotExist:
+            return data
+        raise forms.ValidationError(_('Invalid Item Number - Item Number already Exists!!!'))
+
+    def clean_item_name(self):
+        data = self.cleaned_data.get('item_name')
+        try:
+            match = Item.objects.get(item_name = data)
+        except Item.DoesNotExist:
+            return data
+        raise forms.ValidationError(_('Invalid Item Name - Item Name already Exists!!!'))
+
+    def clean_item_quantity(self):
+        data = self.cleaned_data.get('item_quantity')
+        return data
+
+    def clean_item_price(self):
+        data = self.cleaned_data.get('item_price')
+        return data
+
+    def clean_item_updated(self):
+        data = self.cleaned_data.get('item_updated')
+        return data
+
+    def clean_item_description(self):
+        data = self.cleaned_data.get('item_description')
+        return data
 
